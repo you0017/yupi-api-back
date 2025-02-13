@@ -17,7 +17,7 @@
 
     <modules>
         <module>yupi-interface</module>
-        <module>springboot-init</module>
+        <module>api-back</module>
         <module>yuapi-client-sdk</module>
     </modules>
 

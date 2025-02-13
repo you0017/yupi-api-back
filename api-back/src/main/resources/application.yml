@@ -3,7 +3,7 @@
 # @from <a href="https://yupi.icu">编程导航知识星球</a>
 spring:
   application:
-    name: springboot-init
+    name: api-back
   # 默认 dev 环境
   profiles:
     active: dev
@@ -114,3 +114,15 @@ yuapi:
   client:
     access-key: yupi
     secret-key: abcd
+
+logging:
+  file:
+    name: ${spring.application.name}/logs/app.log # 当前日志文件的路径和名称
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB # 每个日志文件的最大大小
+      max-history: 30     # 保留的日志文件天数
+      file-name-pattern: ${spring.application.name}/logs/app-%d{yyyy-MM-dd}.%i.log # 按日期和索引生成日志文件
+  pattern:
+    file: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n" # 日志文件中的格式
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n" # 控制台输出的格式

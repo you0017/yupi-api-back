@@ -11,6 +11,7 @@ import com.yupi.springbootinit.constant.UserConstant;
 import com.yupi.springbootinit.exception.BusinessException;
 import com.yupi.springbootinit.exception.ThrowUtils;
 import com.yupi.springbootinit.model.dto.interfaceinfo.InterfaceInfoAddRequest;
+import com.yupi.springbootinit.model.dto.interfaceinfo.InterfaceInfoInvokeRequest;
 import com.yupi.springbootinit.model.dto.interfaceinfo.InterfaceInfoQueryRequest;
 import com.yupi.springbootinit.model.dto.interfaceinfo.InterfaceInfoUpdateRequest;
 import com.yupi.springbootinit.model.dto.post.PostEditRequest;
@@ -268,4 +269,38 @@ public class InterfaceInfoController {
         return ResultUtils.success(result);
     }
 
+    /**
+     * 测试调用
+     *
+     * @param interfaceInfoInvokeRequest
+     * @return
+     */
+    @PostMapping("/invoke")
+    public BaseResponse<String> invokeInterfaceInfo(@RequestBody InterfaceInfoInvokeRequest interfaceInfoInvokeRequest, HttpServletRequest request) {
+        if (interfaceInfoInvokeRequest == null || interfaceInfoInvokeRequest.getId() <= 0){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        long i = interfaceInfoInvokeRequest.getId();
+        String userRequestParams = interfaceInfoInvokeRequest.getUserRequestParams();
+        //判断接口是否存在
+        InterfaceInfo oldInterfaceInfo = interfaceInfoService.getById(i);
+        if (oldInterfaceInfo == null){
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
+
+        if (oldInterfaceInfo.getStatus() != InterfaceInfoStatusEnum.ONLINE.getValue()){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"接口已关闭");
+        }
+        User loginUser = userService.getLoginUser(request);
+        String accessKey = loginUser.getAccessKey();
+        String secretKey = loginUser.getSecretKey();
+
+        Gson gson = new Gson();
+        com.yupi.yuapiclientsdk.model.User user = gson.fromJson(userRequestParams, com.yupi.yuapiclientsdk.model.User.class);
+        YuApiClient tempClient = new YuApiClient(accessKey,secretKey);
+        String response = tempClient.getUsernameByPost(user);
+        log.info("response:"+response);
+
+        return ResultUtils.success(response);
+    }
 }
