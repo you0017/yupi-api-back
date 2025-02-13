@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: yupi-interface
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+yuapi:
+  client:
+    access-key: yupi
+    secret-key: abcd
