@@ -117,12 +117,14 @@ yuapi:
 
 logging:
   file:
-    name: ${spring.application.name}/logs/app.log # 当前日志文件的路径和名称
+    #path: ${spring.application.name}/logs # 日志文件输出目录
+    name: ${spring.application.name}/logs/log.log
   logback:
     rollingpolicy:
       max-file-size: 10MB # 每个日志文件的最大大小
       max-history: 30     # 保留的日志文件天数
-      file-name-pattern: ${spring.application.name}/logs/app-%d{yyyy-MM-dd}.%i.log # 按日期和索引生成日志文件
+      #file-name-pattern: ${spring.application.name}/logs/log.%d{yyyy-MM-dd}.%i.gz # 按日期和索引生成日志文件
+      #file-name-pattern: ${spring.application.name}/logs/log.%d{yyyy-MM-dd}.%i.gz # 按日期和索引生成日志文件
   pattern:
     file: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n" # 日志文件中的格式
     console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n" # 控制台输出的格式
