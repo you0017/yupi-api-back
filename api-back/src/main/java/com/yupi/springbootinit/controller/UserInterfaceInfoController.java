@@ -38,8 +38,6 @@ public class UserInterfaceInfoController {
 
     private final UserService userService;
 
-    // region 增删改查
-
     /**
      * 创建
      *
@@ -48,6 +46,7 @@ public class UserInterfaceInfoController {
      * @return
      */
     @PostMapping("/add")
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     public BaseResponse<Long> addUserInterfaceInfo(@RequestBody UserInterfaceInfoAddRequest userInterfaceInfoAddRequest, HttpServletRequest request) {
         if (userInterfaceInfoAddRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
@@ -71,6 +70,7 @@ public class UserInterfaceInfoController {
      * @return
      */
     @PostMapping("/delete")
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     public BaseResponse<Boolean> deleteUserInterfaceInfo(@RequestBody DeleteRequest deleteRequest, HttpServletRequest request) {
         if (deleteRequest == null || deleteRequest.getId() <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
@@ -119,6 +119,7 @@ public class UserInterfaceInfoController {
      * @return
      */
     @GetMapping("/get")
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     public BaseResponse<UserInterfaceInfo> getUserInterfaceInfoById(long id, HttpServletRequest request) {
         if (id <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
@@ -138,6 +139,7 @@ public class UserInterfaceInfoController {
      * @return
      */
     @PostMapping("/list")
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     public BaseResponse<Page<UserInterfaceInfo>> listUserInterfaceInfoByPage(@RequestBody UserInterfaceInfoQueryRequest userInterfaceInfoQueryRequest,
                                                                      HttpServletRequest request) {
         long current = userInterfaceInfoQueryRequest.getCurrent();
@@ -165,6 +167,7 @@ public class UserInterfaceInfoController {
      * @return
      */
     @PostMapping("/list/page")
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     public BaseResponse<Page<UserInterfaceInfo>> listMyUserInterfaceInfoByPage(@RequestBody UserInterfaceInfoQueryRequest userInterfaceInfoQueryRequest,
                                                                        HttpServletRequest request) {
         if (userInterfaceInfoQueryRequest == null) {

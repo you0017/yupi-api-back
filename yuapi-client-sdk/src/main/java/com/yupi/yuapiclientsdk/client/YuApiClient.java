@@ -24,7 +24,7 @@ public class YuApiClient {
         //可以单独传入http参数，这样参数会自动做URL编码，拼接在URL中
         HashMap<String, Object> paramMap = new HashMap<>();
         paramMap.put("name", name);
-        String result3= HttpUtil.get("http://localhost:8080/api/name", paramMap);
+        String result3= HttpUtil.get("http://localhost:8082/api/name", paramMap);
         return result3;
     }
 
@@ -32,7 +32,7 @@ public class YuApiClient {
         //可以单独传入http参数，这样参数会自动做URL编码，拼接在URL中
         HashMap<String, Object> paramMap = new HashMap<>();
         paramMap.put("name", name);
-        String result3= HttpUtil.post("http://localhost:8080/api/name", paramMap);
+        String result3= HttpUtil.post("http://localhost:8082/api/name", paramMap);
         return result3;
     }
 
@@ -56,7 +56,7 @@ public class YuApiClient {
         Gson gson = new Gson();
         String json = gson.toJson(user);
         //String result3= HttpUtil.post("http://localhost:8080/name/user", json);
-        HttpResponse execute = HttpRequest.post("http://localhost:8080/api/name/user")
+        HttpResponse execute = HttpRequest.post("http://localhost:8082/api/name/user")
                 .charset("UTF-8")
                 .addHeaders(getHeaderMap(json))
                 .body(json)

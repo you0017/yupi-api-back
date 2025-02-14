@@ -1,5 +1,7 @@
 package com.yupi.springbootinit.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yupi.springbootinit.common.ErrorCode;
 import com.yupi.springbootinit.exception.BusinessException;
@@ -32,6 +34,18 @@ public class UserInterfaceInfoServiceImpl extends ServiceImpl<UserInterfaceInfoM
         if (userInterfaceInfo.getLeftNum() == null || userInterfaceInfo.getLeftNum() <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "名称过长");
         }
+    }
+
+    @Override
+    public boolean invokeCount(long interfaceInfoId, long userId) {
+        if (interfaceInfoId <= 0 || userId <= 0){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        return this.update(null,new LambdaUpdateWrapper<UserInterfaceInfo>()
+                .eq(UserInterfaceInfo::getInterfaceInfoId,interfaceInfoId)
+                .eq(UserInterfaceInfo::getUserId,userId)
+                .gt(UserInterfaceInfo::getLeftNum,0)
+                .setSql("leftNum = leftNum - 1,totalNum = totalNum + 1"));
     }
 }
 
