@@ -15,6 +15,7 @@ import com.yupi.springbootinit.model.vo.PostVO;
 import com.yupi.springbootinit.service.PostFavourService;
 import com.yupi.springbootinit.service.PostService;
 import com.yupi.springbootinit.service.UserService;import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,16 +32,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/post_favour")
 @Slf4j
+@RequiredArgsConstructor
 public class PostFavourController {
 
-    @Autowired
-    private PostFavourService postFavourService;
+    private final PostFavourService postFavourService;
 
-    @Autowired
-    private PostService postService;
+    private final PostService postService;
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     /**
      * 收藏 / 取消收藏

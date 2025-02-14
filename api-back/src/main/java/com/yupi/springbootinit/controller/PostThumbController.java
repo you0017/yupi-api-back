@@ -9,6 +9,7 @@ import com.yupi.springbootinit.model.entity.User;
 import com.yupi.springbootinit.service.PostThumbService;
 import com.yupi.springbootinit.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,13 +26,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/post_thumb")
 @Slf4j
+@RequiredArgsConstructor
 public class PostThumbController {
 
-    @Autowired
-    private PostThumbService postThumbService;
+    private final PostThumbService postThumbService;
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     /**
      * 点赞 / 取消点赞

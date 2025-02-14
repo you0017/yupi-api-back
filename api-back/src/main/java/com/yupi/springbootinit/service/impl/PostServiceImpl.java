@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
@@ -43,18 +44,16 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements PostService {
 
     private final static Gson GSON = new Gson();
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private PostThumbMapper postThumbMapper;
+    private final PostThumbMapper postThumbMapper;
 
-    @Autowired
-    private PostFavourMapper postFavourMapper;
+    private final PostFavourMapper postFavourMapper;
 
     /*@Autowired
     private ElasticsearchRestTemplate elasticsearchRestTemplate;*/

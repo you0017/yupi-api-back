@@ -13,7 +13,7 @@ import com.yupi.springbootinit.model.entity.PostFavour;
 import com.yupi.springbootinit.model.entity.User;
 import com.yupi.springbootinit.service.PostFavourService;
 import com.yupi.springbootinit.service.PostService;
-import javax.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,11 +25,11 @@ import org.springframework.transaction.annotation.Transactional;
  * @from <a href="https://yupi.icu">编程导航知识星球</a>
  */
 @Service
+@RequiredArgsConstructor
 public class PostFavourServiceImpl extends ServiceImpl<PostFavourMapper, PostFavour>
         implements PostFavourService {
 
-    @Resource
-    private PostService postService;
+    private final PostService postService;
 
     /**
      * 帖子收藏
@@ -86,8 +86,8 @@ public class PostFavourServiceImpl extends ServiceImpl<PostFavourMapper, PostFav
                 // 帖子收藏数 - 1
                 result = postService.update()
                         .eq("id", postId)
-                        .gt("favourNum", 0)
-                        .setSql("favourNum = favourNum - 1")
+                        .gt("favour_num", 0)
+                        .setSql("favour_num = favour_num - 1")
                         .update();
                 return result ? -1 : 0;
             } else {
@@ -100,7 +100,7 @@ public class PostFavourServiceImpl extends ServiceImpl<PostFavourMapper, PostFav
                 // 帖子收藏数 + 1
                 result = postService.update()
                         .eq("id", postId)
-                        .setSql("favourNum = favourNum + 1")
+                        .setSql("favour_num = favour_num + 1")
                         .update();
                 return result ? 1 : 0;
             } else {

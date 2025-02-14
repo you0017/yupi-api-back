@@ -73,7 +73,7 @@ knife4j:
 
 mybatis-plus:
   configuration:
-    map-underscore-to-camel-case: false
+    map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   global-config:
     db-config:
@@ -124,7 +124,7 @@ logging:
       max-file-size: 10MB # 每个日志文件的最大大小
       max-history: 30     # 保留的日志文件天数
       #file-name-pattern: ${spring.application.name}/logs/log.%d{yyyy-MM-dd}.%i.gz # 按日期和索引生成日志文件
-      #file-name-pattern: ${spring.application.name}/logs/log.%d{yyyy-MM-dd}.%i.gz # 按日期和索引生成日志文件
+      file-name-pattern: ${spring.application.name}/logs/log.%d{yyyy-MM-dd}.%i.gz # 按日期和索引生成日志文件
   pattern:
     file: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n" # 日志文件中的格式
     console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n" # 控制台输出的格式

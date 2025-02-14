@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.api.WxConsts.MenuButtonType;
 import me.chanjar.weixin.common.bean.menu.WxMenu;
@@ -31,13 +32,12 @@ import org.springframework.web.bind.annotation.RestController;
 //@RestController
 //@RequestMapping("/")
 @Slf4j
+@RequiredArgsConstructor
 public class WxMpController {
 
-    @Autowired
-    private WxMpService wxMpService;
+    private final WxMpService wxMpService;
 
-    @Autowired
-    private WxMpMessageRouter router;
+    private final WxMpMessageRouter router;
 
     @PostMapping("/")
     public void receiveMessage(HttpServletRequest request, HttpServletResponse response)

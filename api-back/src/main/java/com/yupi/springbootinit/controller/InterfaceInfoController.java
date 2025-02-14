@@ -27,6 +27,7 @@ import java.util.List;
 import jakarta.servlet.http.HttpServletRequest;
 
 import com.yupi.yuapiclientsdk.client.YuApiClient;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -46,16 +47,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/interface")
 @Slf4j
+@RequiredArgsConstructor
 public class InterfaceInfoController {
 
-    @Autowired
-    private InterfaceInfoService interfaceInfoService;
+    private final InterfaceInfoService interfaceInfoService;
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private YuApiClient yuApiClient;
+    private final YuApiClient yuApiClient;
 
     // region 增删改查
 

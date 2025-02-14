@@ -17,6 +17,7 @@ import java.util.Arrays;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,13 +37,12 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/file")
 @Slf4j
 @Tag(name = "文件接口")
+@RequiredArgsConstructor
 public class FileController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private CosManager cosManager;
+    private final CosManager cosManager;
 
     /**
      * 文件上传
