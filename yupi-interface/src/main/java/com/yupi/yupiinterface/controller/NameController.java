@@ -2,7 +2,7 @@ package com.yupi.yupiinterface.controller;
 
 import com.yupi.yuapiclientsdk.client.YuApiClient;
 import com.yupi.yuapiclientsdk.model.User;
-import com.yupi.yuapiclientsdk.utils.SIgnUtil;
+import com.yupi.yuapiclientsdk.utils.SignUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +42,7 @@ public class NameController {
             return "无权限";
         }
         //TODO 实际情况是从数据库中获取secretKey
-        String serverSign = SIgnUtil.getSign(body, "abcd");
+        String serverSign = SignUtil.getSign(body, "abcd");
         if (!sign.equals(serverSign)){
             return "无权限";
         }

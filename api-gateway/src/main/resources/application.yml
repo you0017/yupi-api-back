@@ -15,106 +15,39 @@ spring:
             allowCredentials: true
       #路由
       routes:
-        - id: res-food  #路由id
-          uri: lb://res-food #路由微服务目标，lb代表负载均衡
-          predicates: #路由断言，判断是否符合规则，符合则路由到目标
-            - Path=/resFood/**  #以请求路径做判断，以/resfood开头则符合
-            #  - ServiceTimeBetween=08:00,22:00
-            #          filters:
-            #            - TokenFilterFactory
-            #- PrintAny=1,2,3 #要与类名一致
-        #用户
-        - id: shop-user
-          uri: lb://shop-user
+        - id: name
+          uri: http://localhost:8081
           predicates:
-            - Path=/user/**
-        #验证码
-        - id: shop-yzm
-          uri: lb://shop-system
-          predicates:
-            - Path=/yzm/**
-        #normal
-        - id: shop-normal
-          uri: lb://shop-system
-          predicates:
-            - Path=/normal/**
-        #frontEdit
-        - id: shop-frontEdit
-          uri: lb://shop-system
-          predicates:
-            - Path=/frontEdit/**
-        #商品
-        - id: shop-item
-          uri: lb://shop-item
-          predicates:
-            - Path=/item/**
-        #销售额
-        - id: shop-finance
-          uri: lb://shop-item
-          predicates:
-            - Path=/finance/**
-        #预警类
-        - id: shop-inventory
-          uri: lb://shop-item
-          predicates:
-            - Path=/inventory/**
-        #地址
-        - id: shop-address
-          uri: lb://shop-address
-          predicates:
-            - Path=/address/**
-        #订单
-        - id: shop-order
-          uri: lb://shop-order
-          predicates:
-            - Path=/order/**
-        #发货有关Logistics
-        - id: shop-logistics
-          uri: lb://shop-order
-          predicates:
-            - Path=/logistics/**
-        #退货有关
-        - id: shop-goodsback
-          uri: lb://shop-order
-          predicates:
-            - Path=/goodsback/**
-        #graph  echart图像
-        - id: shop-graph
-          uri: lb://shop-order
-          predicates:
-            - Path=/graph/**
-        #支付
-        - id: shop-pay
-          uri:
-            lb://shop-order
-          predicates:
-            - Path=/alipay/**
-        #评论相关
-        - id: shop-comment
-          uri:
-            lb://shop-comment
-          predicates:
-            - Path=/comment/**
-        #chat
-        - id: shop-ws
-          uri:
-            lb://shop-chat
-          predicates:
-            - Path=/ws/chat/**
-        - id: shop-chat
-          uri:
-            lb://shop-chat
-          predicates:
-            - Path=/chat/**
-        #优惠券
-        - id: shop-coupon
-          uri: lb://shop-coupon
-          predicates:
-            - Path=/coupon/**
-        - id: shop-coupon-grap
-          uri: lb://shop-coupon
-          predicates:
-            - Path=/ws/coupon/**
+            - Path=/**
+#        - id: you
+#          uri: http://www.youyou.love
+#          predicates:
+#            - Path=/you/**
+#          filters: #=左边，或者 name，一般是表示内置的过滤器
+            #- RewritePath=/you/.*,/
+            #服务降级，如果这个路径访问不到，就降级到别的路径
+#            - name: CircuitBreaker
+#              args:
+#                name: myCircuitBreaker
+#                fallbackUri: forward:/
+            #- RewritePath=/consumingServiceEndpoint, /backingServiceEndpoint
+#        - id: a
+#          uri: http://www.youyou.love
+#          predicates:
+#            - Path=/
+#        - id: res-food  #路由id
+#          uri: lb://res-food #路由微服务目标，lb代表负载均衡
+#          predicates: #路由断言，判断是否符合规则，符合则路由到目标
+#            - Path=/resFood/**  #以请求路径做判断，以/resfood开头则符合
+#            #  - ServiceTimeBetween=08:00,22:00
+#            #          filters:
+#            #            - TokenFilterFactory
+#            #- PrintAny=1,2,3 #要与类名一致
+#        #用户
+#        - id: shop-user
+#          uri: lb://shop-user
+#          predicates:
+#            - Path=/user/**
             #         filters:
             #            - TokenFilterFactory
             #- After=
@@ -125,3 +58,21 @@ spring:
         #                - AddRequestHeader=
         #default-filters: #左边的请求头里面的键，右边是值
         #- AddResponseHeader=true,aaaaaa
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+
+logging:
+  file:
+    #path: ${spring.application.name}/logs # 日志文件输出目录
+    name: ${spring.application.name}/logs/log.log
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB # 每个日志文件的最大大小
+      max-history: 30     # 保留的日志文件天数
+      #file-name-pattern: ${spring.application.name}/logs/log.%d{yyyy-MM-dd}.%i.gz # 按日期和索引生成日志文件
+      file-name-pattern: ${spring.application.name}/logs/log.%d{yyyy-MM-dd}.%i.gz # 按日期和索引生成日志文件
+#  pattern:
+#    file: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n" # 日志文件中的格式
+#    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n" # 控制台输出的格式
+#  level:
+#    root: debug

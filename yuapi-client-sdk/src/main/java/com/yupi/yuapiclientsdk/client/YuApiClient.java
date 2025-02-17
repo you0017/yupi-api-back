@@ -6,7 +6,7 @@ import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
 import com.google.gson.Gson;
 import com.yupi.yuapiclientsdk.model.User;
-import com.yupi.yuapiclientsdk.utils.SIgnUtil;
+import com.yupi.yuapiclientsdk.utils.SignUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -44,7 +44,7 @@ public class YuApiClient {
         hashMap.put("nonce", RandomUtil.randomNumbers(5));
         hashMap.put("body", body);
         hashMap.put("timestamp", String.valueOf(System.currentTimeMillis()));
-        hashMap.put("sign", SIgnUtil.getSign(body, secretKey));
+        hashMap.put("sign", SignUtil.getSign(body, secretKey));
         hashMap.put("Content-Type", "application/json; charset=UTF-8");
         return hashMap;
     }

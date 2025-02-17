@@ -3,7 +3,7 @@ package com.yupi.yuapiclientsdk.utils;
 import cn.hutool.crypto.digest.DigestAlgorithm;
 import cn.hutool.crypto.digest.Digester;
 
-public class SIgnUtil {
+public class SignUtil {
     /**
      * 签名加密
      * @param body
