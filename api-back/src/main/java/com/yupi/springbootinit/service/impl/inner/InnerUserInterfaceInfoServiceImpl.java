@@ -1,16 +1,17 @@
-package com.yupi.springbootinit.service.impl;
+package com.yupi.springbootinit.service.impl.inner;
+
 
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yupi.model.entity.InterfaceInfo;
+import com.yupi.model.entity.User;
+import com.yupi.model.entity.UserInterfaceInfo;
+import com.yupi.service.InnerUserInterfaceInfoService;
 import com.yupi.springbootinit.common.ErrorCode;
 import com.yupi.springbootinit.exception.BusinessException;
 import com.yupi.springbootinit.exception.ThrowUtils;
-import com.yupi.springbootinit.model.entity.InterfaceInfo;
-import com.yupi.springbootinit.model.entity.UserInterfaceInfo;
-import com.yupi.springbootinit.service.UserInterfaceInfoService;
 import com.yupi.springbootinit.mapper.UserInterfaceInfoMapper;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -18,9 +19,10 @@ import org.springframework.stereotype.Service;
 * @description 针对表【user_interface_info(用户调用接口关系表)】的数据库操作Service实现
 * @createDate 2025-02-14 11:11:26
 */
+@DubboService
 @Service
-public class UserInterfaceInfoServiceImpl extends ServiceImpl<UserInterfaceInfoMapper, UserInterfaceInfo>
-    implements UserInterfaceInfoService{
+public class InnerUserInterfaceInfoServiceImpl extends ServiceImpl<UserInterfaceInfoMapper, UserInterfaceInfo>
+    implements InnerUserInterfaceInfoService {
     @Override
     public void validUserInterfaceInfo(UserInterfaceInfo userInterfaceInfo, boolean add) {
         if (userInterfaceInfo == null) {
@@ -37,6 +39,16 @@ public class UserInterfaceInfoServiceImpl extends ServiceImpl<UserInterfaceInfoM
     }
 
     @Override
+    public User getInvokeUser(String accessKey, String secretKey) {
+        return null;
+    }
+
+    @Override
+    public InterfaceInfo getInterfaceInfo(String url, String method) {
+        return null;
+    }
+
+    @Override
     public boolean invokeCount(long interfaceInfoId, long userId) {
         if (interfaceInfoId <= 0 || userId <= 0){
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
@@ -45,7 +57,7 @@ public class UserInterfaceInfoServiceImpl extends ServiceImpl<UserInterfaceInfoM
                 .eq(UserInterfaceInfo::getInterfaceInfoId,interfaceInfoId)
                 .eq(UserInterfaceInfo::getUserId,userId)
                 .gt(UserInterfaceInfo::getLeftNum,0)
-                .setSql("leftNum = leftNum - 1,totalNum = totalNum + 1"));
+                .setSql("left_num = left_num - 1,total_num = total_num + 1"));
     }
 }
 

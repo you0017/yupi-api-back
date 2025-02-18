@@ -29,9 +29,9 @@ spring:
       #路由
       routes:
         - id: api-back
-          uri: lb://api-back #lb://api-back
+          uri: lb://yupi-interface #lb://api-back
           predicates:
-            - Path=/**
+            - Path=/api/**
 #        - id: you
 #          uri: http://www.youyou.love
 #          predicates:

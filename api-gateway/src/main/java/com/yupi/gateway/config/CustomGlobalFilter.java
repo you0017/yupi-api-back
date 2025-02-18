@@ -1,12 +1,17 @@
 package com.yupi.gateway.config;
 
 
+import com.yupi.model.entity.InterfaceInfo;
+import com.yupi.model.entity.User;
+import com.yupi.service.InnerInterfaceInfoService;
+import com.yupi.service.InnerUserInterfaceInfoService;
+import com.yupi.service.InnerUserService;
 import com.yupi.yuapiclientsdk.utils.SignUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.dubbo.config.annotation.DubboReference;
 import org.reactivestreams.Publisher;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.io.buffer.DataBuffer;
@@ -22,7 +27,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Configuration
@@ -32,6 +36,14 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
     private static final List<String> IP_WHITE_LIST = List.of("127.0.0.1");
     private static final long FIVE_MINUTE = 60 * 5L;
 
+    @DubboReference
+    private InnerUserService innerUserService;
+    @DubboReference
+    private InnerInterfaceInfoService innerInterfaceInfoService;
+    @DubboReference
+    private InnerUserInterfaceInfoService innerUserInterfaceInfoService;
+
+    private final static String HOST = "http://localhost:8082";
     /**
      * 全局过滤
      * @param exchange
@@ -65,23 +77,25 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
         String sign = headers.getFirst("sign");
         String body = headers.getFirst("body");
         //TODO 实际情况应该是去数据库查是否已分配给用户
-        if ("yupi".equals(accessKey)) {
+        User invokeUser = innerUserService.getInvokeUser(accessKey);
+        if (invokeUser.getSecretKey()==null || !SignUtil.getSign(body, invokeUser.getSecretKey()).equals(sign)) {
             return handleNoAuth(response);
         }
-        if (nonce != null && Long.parseLong(nonce) > 10000L) {
+        //nonce关了，麻烦
+        /*if (nonce == null || Long.parseLong(nonce) > 10000L) {
             return handleNoAuth(response);
-        }
+        }*/
+        //时间不能超过五分钟
         long currentTime = System.currentTimeMillis() / 1000;
-        if (timestamp != null && Math.abs(currentTime - Long.parseLong(timestamp)) >= FIVE_MINUTE) {
-            return handleNoAuth(response);
-        }
-        String serverSign = SignUtil.getSign(body, "abcd");
-        if (serverSign.equals(sign)){
+        if (timestamp == null || Math.abs(currentTime - Long.parseLong(timestamp)) >= FIVE_MINUTE) {
             return handleNoAuth(response);
         }
         //4.请求接口是否存在
         //todo 从数据库中查询模拟接口是否存在，以及请求方法是否匹配（还可以校验请求参数
-
+        InterfaceInfo interfaceInfo = innerInterfaceInfoService.getInterfaceInfo(HOST + request.getPath().toString(), request.getMethod().name());
+        if (interfaceInfo == null) {
+            return handleNoAuth(response);
+        }
 
         //对返回值做处理
         ServerHttpResponseDecorator decoratedResponse = new ServerHttpResponseDecorator(response) {
@@ -94,6 +108,9 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
                         log.info("请求响应：" + response.getStatusCode());
 
                         //8.调用成功，接口调用次数加一
+                        if (response.getStatusCode().equals(HttpStatus.OK)){
+                            innerUserInterfaceInfoService.invokeCount(interfaceInfo.getId(), invokeUser.getId());
+                        }
                         // probably should reuse buffers
                         byte[] content = new byte[dataBuffer.readableByteCount()];
                         dataBuffer.read(content);

@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.yupi.service.InnerUserInterfaceInfoService;
 import com.yupi.springbootinit.annotation.AuthCheck;
 import com.yupi.springbootinit.common.*;
 import com.yupi.springbootinit.constant.UserConstant;
@@ -12,9 +13,8 @@ import com.yupi.springbootinit.exception.ThrowUtils;
 import com.yupi.springbootinit.model.dto.userInterfaceInfo.UserInterfaceInfoAddRequest;
 import com.yupi.springbootinit.model.dto.userInterfaceInfo.UserInterfaceInfoQueryRequest;
 import com.yupi.springbootinit.model.dto.userInterfaceInfo.UserInterfaceInfoUpdateRequest;
-import com.yupi.springbootinit.model.entity.UserInterfaceInfo;
-import com.yupi.springbootinit.model.entity.User;
-import com.yupi.springbootinit.service.UserInterfaceInfoService;
+import com.yupi.model.entity.UserInterfaceInfo;
+import com.yupi.model.entity.User;
 import com.yupi.springbootinit.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UserInterfaceInfoController {
 
-    private final UserInterfaceInfoService userInterfaceInfoService;
+    private final InnerUserInterfaceInfoService innerUserInterfaceInfoService;
 
     private final UserService userService;
 
@@ -53,10 +53,10 @@ public class UserInterfaceInfoController {
         }
         UserInterfaceInfo userInterfaceInfo = new UserInterfaceInfo();
         BeanUtils.copyProperties(userInterfaceInfoAddRequest, userInterfaceInfo);
-        userInterfaceInfoService.validUserInterfaceInfo(userInterfaceInfo, true);
+        innerUserInterfaceInfoService.validUserInterfaceInfo(userInterfaceInfo, true);
         User loginUser = userService.getLoginUser(request);
         userInterfaceInfo.setUserId(loginUser.getId());
-        boolean result = userInterfaceInfoService.save(userInterfaceInfo);
+        boolean result = innerUserInterfaceInfoService.save(userInterfaceInfo);
         ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
         long newPostId = userInterfaceInfo.getId();
         return ResultUtils.success(newPostId);
@@ -78,13 +78,13 @@ public class UserInterfaceInfoController {
         User user = userService.getLoginUser(request);
         long id = deleteRequest.getId();
         // 判断是否存在
-        UserInterfaceInfo oldPost = userInterfaceInfoService.getById(id);
+        UserInterfaceInfo oldPost = innerUserInterfaceInfoService.getById(id);
         ThrowUtils.throwIf(oldPost == null, ErrorCode.NOT_FOUND_ERROR);
         // 仅本人或管理员可删除
         if (!oldPost.getUserId().equals(user.getId()) && !userService.isAdmin(request)) {
             throw new BusinessException(ErrorCode.NO_AUTH_ERROR);
         }
-        boolean b = userInterfaceInfoService.removeById(id);
+        boolean b = innerUserInterfaceInfoService.removeById(id);
         return ResultUtils.success(b);
     }
 
@@ -103,12 +103,12 @@ public class UserInterfaceInfoController {
         UserInterfaceInfo userInterfaceInfo = new UserInterfaceInfo();
         BeanUtils.copyProperties(userInterfaceInfoUpdateRequest, userInterfaceInfo);
         // 参数校验
-        userInterfaceInfoService.validUserInterfaceInfo(userInterfaceInfo, false);
+        innerUserInterfaceInfoService.validUserInterfaceInfo(userInterfaceInfo, false);
         long id = userInterfaceInfoUpdateRequest.getId();
         // 判断是否存在
-        UserInterfaceInfo oldPost = userInterfaceInfoService.getById(id);
+        UserInterfaceInfo oldPost = innerUserInterfaceInfoService.getById(id);
         ThrowUtils.throwIf(oldPost == null, ErrorCode.NOT_FOUND_ERROR);
-        boolean result = userInterfaceInfoService.updateById(userInterfaceInfo);
+        boolean result = innerUserInterfaceInfoService.updateById(userInterfaceInfo);
         return ResultUtils.success(result);
     }
 
@@ -124,7 +124,7 @@ public class UserInterfaceInfoController {
         if (id <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        UserInterfaceInfo userInterfaceInfo = userInterfaceInfoService.getById(id);
+        UserInterfaceInfo userInterfaceInfo = innerUserInterfaceInfoService.getById(id);
         if (userInterfaceInfo == null) {
             throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
         }
@@ -154,7 +154,7 @@ public class UserInterfaceInfoController {
         lambdaQueryWrapper.eq(userInterfaceInfo.getInterfaceInfoId() != null && userInterfaceInfo.getInterfaceInfoId() > 0, UserInterfaceInfo::getInterfaceInfoId, userInterfaceInfo.getInterfaceInfoId());
         lambdaQueryWrapper.eq(userInterfaceInfo.getTotalNum() != null && userInterfaceInfo.getTotalNum() > 0, UserInterfaceInfo::getTotalNum, userInterfaceInfo.getTotalNum());
         lambdaQueryWrapper.eq(userInterfaceInfo.getLeftNum() != null && userInterfaceInfo.getLeftNum() > 0, UserInterfaceInfo::getLeftNum, userInterfaceInfo.getLeftNum());;
-        Page<UserInterfaceInfo> userInterfaceInfoPage = userInterfaceInfoService.page(new Page<>(current, size),
+        Page<UserInterfaceInfo> userInterfaceInfoPage = innerUserInterfaceInfoService.page(new Page<>(current, size),
                 lambdaQueryWrapper);
         return ResultUtils.success(userInterfaceInfoPage);
     }
@@ -179,7 +179,7 @@ public class UserInterfaceInfoController {
         long size = userInterfaceInfoQueryRequest.getPageSize();
         // 限制爬虫
         ThrowUtils.throwIf(size > 20, ErrorCode.PARAMS_ERROR);
-        Page<UserInterfaceInfo> postPage = userInterfaceInfoService.page(new Page<>(current, size),
+        Page<UserInterfaceInfo> postPage = innerUserInterfaceInfoService.page(new Page<>(current, size),
                 new QueryWrapper<>());
         return ResultUtils.success(postPage);
     }

@@ -1,11 +1,12 @@
 package com.yupi.springbootinit.service.impl;
 
+
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yupi.model.entity.InterfaceInfo;
 import com.yupi.springbootinit.common.ErrorCode;
 import com.yupi.springbootinit.exception.BusinessException;
 import com.yupi.springbootinit.exception.ThrowUtils;
 import com.yupi.springbootinit.mapper.InterfaceInfoMapper;
-import com.yupi.springbootinit.model.entity.InterfaceInfo;
 import com.yupi.springbootinit.service.InterfaceInfoService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -16,8 +17,7 @@ import org.springframework.stereotype.Service;
 * @createDate 2025-02-03 19:52:48
 */
 @Service
-public class InterfaceInfoServiceImpl extends ServiceImpl<InterfaceInfoMapper, InterfaceInfo>
-    implements InterfaceInfoService{
+public class InterfaceInfoServiceImpl extends ServiceImpl<InterfaceInfoMapper, InterfaceInfo> implements InterfaceInfoService {
 
     @Override
     public void validInterfaceInfo(InterfaceInfo interfaceInfo, boolean add) {

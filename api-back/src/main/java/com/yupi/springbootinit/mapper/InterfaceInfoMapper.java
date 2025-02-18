@@ -1,7 +1,8 @@
 package com.yupi.springbootinit.mapper;
 
-import com.yupi.springbootinit.model.entity.InterfaceInfo;
+
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.yupi.model.entity.InterfaceInfo;
 
 /**
 * @author 0.0

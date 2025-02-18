@@ -1,59 +1,58 @@
-package com.yupi.springbootinit.model.entity;
+package com.yupi.model.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 import java.util.Date;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
- * 帖子
- *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
- * @from <a href="https://yupi.icu">编程导航知识星球</a>
+ * 用户调用接口关系表
+ * @TableName user_interface_info
  */
-@TableName(value = "post")
+@TableName(value ="user_interface_info")
 @Data
-public class Post implements Serializable {
-
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class UserInterfaceInfo implements Serializable {
     /**
-     * id
+     * 主键
      */
     @TableId(type = IdType.AUTO)
     private Long id;
 
     /**
-     * 标题
-     */
-    private String title;
-
-    /**
-     * 内容
-     */
-    private String content;
-
-    /**
-     * 标签列表 json
-     */
-    private String tags;
-
-    /**
-     * 点赞数
-     */
-    private Integer thumbNum;
-
-    /**
-     * 收藏数
-     */
-    private Integer favourNum;
-
-    /**
-     * 创建用户 id
+     * 调用用户id
      */
     private Long userId;
+
+    /**
+     * 接口id
+     */
+    private Long interfaceInfoId;
+
+    /**
+     * 总调用次数
+     */
+    private Integer totalNum;
+
+    /**
+     * 剩余调用次数
+     */
+    private Integer leftNum;
+
+    /**
+     * 0正常 1禁用
+     */
+    private Integer status;
 
     /**
      * 创建时间
@@ -66,9 +65,8 @@ public class Post implements Serializable {
     private Date updateTime;
 
     /**
-     * 是否删除
+     * 是否删除 0未删 1已删
      */
-    @TableLogic
     private Integer isDelete;
 
     @TableField(exist = false)

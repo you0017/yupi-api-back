@@ -1,4 +1,4 @@
-package com.yupi.springbootinit.model.entity;
+package com.yupi.model.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -9,14 +9,14 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * 帖子点赞
+ * 帖子收藏
  *
  * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
  * @from <a href="https://yupi.icu">编程导航知识星球</a>
- */
-@TableName(value = "post_thumb")
+ **/
+@TableName(value = "post_favour")
 @Data
-public class PostThumb implements Serializable {
+public class PostFavour implements Serializable {
 
     /**
      * id

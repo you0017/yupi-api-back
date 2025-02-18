@@ -38,7 +38,7 @@ public class NameController {
         if (nonce == null || Long.parseLong(nonce) > 100000){
             return "无权限";
         }
-        if (timestamp == null || Math.abs(Long.parseLong(timestamp) - System.currentTimeMillis()) > 1000 * 60 * 5){
+        if (timestamp == null || Math.abs(Long.parseLong(timestamp) - System.currentTimeMillis()/1000) > 60 * 5){
             return "无权限";
         }
         //TODO 实际情况是从数据库中获取secretKey
