@@ -2,6 +2,7 @@ package com.yupi.springbootinit.aop;
 
 import java.util.UUID;
 
+import com.yupi.springbootinit.common.BaseContext;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -35,7 +36,8 @@ public class LogInterceptor {
         stopWatch.start();
         // 获取请求路径
         RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
-        HttpServletRequest httpServletRequest = (HttpServletRequest) ((ServletRequestAttributes) requestAttributes).getRequest();
+        //HttpServletRequest httpServletRequest = (HttpServletRequest) ((ServletRequestAttributes) requestAttributes).getRequest();
+        HttpServletRequest httpServletRequest = (HttpServletRequest) BaseContext.getCurrentId();
         // 生成请求唯一 id
         String requestId = UUID.randomUUID().toString();
         String url = httpServletRequest.getRequestURI();

@@ -7,9 +7,9 @@ import com.yupi.springbootinit.model.entity.Post;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 
 /**
@@ -23,10 +23,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 @Slf4j
 public class IncSyncPostToEs {
 
-    @Resource
+    @Autowired
     private PostMapper postMapper;
 
-    @Resource
+    @Autowired
     private PostEsDao postEsDao;
 
     /**

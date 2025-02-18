@@ -1,6 +1,7 @@
 package com.yupi.springbootinit.aop;
 
 import com.yupi.springbootinit.annotation.AuthCheck;
+import com.yupi.springbootinit.common.BaseContext;
 import com.yupi.springbootinit.common.ErrorCode;
 import com.yupi.springbootinit.exception.BusinessException;
 import com.yupi.springbootinit.model.entity.User;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * 权限校验 AOP
@@ -42,8 +44,8 @@ public class AuthInterceptor {
     public Object doInterceptor(ProceedingJoinPoint joinPoint, AuthCheck authCheck) throws Throwable {
         AuthCheck annotation = ((MethodSignature) (joinPoint.getSignature())).getMethod().getAnnotation(AuthCheck.class);
         String mustRole = annotation.mustRole();
-        RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
-        HttpServletRequest request = (HttpServletRequest) ((ServletRequestAttributes) requestAttributes).getRequest();
+        // 获取当前请求的 RequestAttributes 对象
+        HttpServletRequest request = (HttpServletRequest) BaseContext.getCurrentId();
         // 当前登录用户
         User loginUser = userService.getLoginUser(request);
         // 必须有该权限才通过

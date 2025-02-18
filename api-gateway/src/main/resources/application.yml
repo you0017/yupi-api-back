@@ -1,10 +1,23 @@
 server:
   port: 8080
 
+dubbo:
+  application:
+    name: dubbo-api-gateway #不同的服务不同
+  protocol:
+    name: dubbo
+    port: 18080
+  registry:
+    address: nacos://127.0.0.1:8848
+    timeout: 10000
+
 spring:
   application:
     name: api-gateway
   cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
     gateway:
       globalcors:
         cors-configurations:
@@ -15,8 +28,8 @@ spring:
             allowCredentials: true
       #路由
       routes:
-        - id: name
-          uri: http://localhost:8081
+        - id: api-back
+          uri: lb://api-back #lb://api-back
           predicates:
             - Path=/**
 #        - id: you
@@ -74,5 +87,8 @@ logging:
 #  pattern:
 #    file: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n" # 日志文件中的格式
 #    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n" # 控制台输出的格式
-#  level:
-#    root: debug
+  level:
+    org:
+      springframework: debug
+    com:
+      yupi: debug

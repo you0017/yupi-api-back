@@ -6,9 +6,9 @@ import com.yupi.springbootinit.model.entity.Post;
 import com.yupi.springbootinit.service.PostService;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 
 /**
@@ -22,10 +22,10 @@ import org.springframework.boot.CommandLineRunner;
 @Slf4j
 public class FullSyncPostToEs implements CommandLineRunner {
 
-    @Resource
+    @Autowired
     private PostService postService;
 
-    @Resource
+    @Autowired
     private PostEsDao postEsDao;
 
     @Override

@@ -6,7 +6,6 @@ import com.yupi.springbootinit.common.ErrorCode;
 import com.yupi.springbootinit.common.ResultUtils;
 import com.yupi.springbootinit.constant.FileConstant;
 import com.yupi.springbootinit.exception.BusinessException;
-import com.yupi.springbootinit.manager.CosManager;
 import com.yupi.springbootinit.model.dto.file.UploadFileRequest;
 import com.yupi.springbootinit.model.entity.User;
 import com.yupi.springbootinit.model.enums.FileUploadBizEnum;
@@ -33,7 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
  * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
  * @from <a href="https://yupi.icu">编程导航知识星球</a>
  */
-@RestController
+//@RestController
 @RequestMapping("/file")
 @Slf4j
 @Tag(name = "文件接口")
@@ -41,8 +40,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileController {
 
     private final UserService userService;
-
-    private final CosManager cosManager;
 
     /**
      * 文件上传
@@ -52,7 +49,7 @@ public class FileController {
      * @param request
      * @return
      */
-    @Operation(summary = "文件上传")
+    /*@Operation(summary = "文件上传")
     @PostMapping("/upload")
     public BaseResponse<String> uploadFile(@RequestPart("file") MultipartFile multipartFile,
             UploadFileRequest uploadFileRequest, HttpServletRequest request) {
@@ -87,7 +84,7 @@ public class FileController {
                 }
             }
         }
-    }
+    }*/
 
     /**
      * 校验文件
@@ -95,7 +92,7 @@ public class FileController {
      * @param multipartFile
      * @param fileUploadBizEnum 业务类型
      */
-    private void validFile(MultipartFile multipartFile, FileUploadBizEnum fileUploadBizEnum) {
+    /*private void validFile(MultipartFile multipartFile, FileUploadBizEnum fileUploadBizEnum) {
         // 文件大小
         long fileSize = multipartFile.getSize();
         // 文件后缀
@@ -109,5 +106,5 @@ public class FileController {
                 throw new BusinessException(ErrorCode.PARAMS_ERROR, "文件类型错误");
             }
         }
-    }
+    }*/
 }

@@ -1,7 +1,21 @@
 # 公共配置文件
 # @author <a href="https://github.com/liyupi">程序员鱼皮</a>
 # @from <a href="https://yupi.icu">编程导航知识星球</a>
+dubbo:
+  application:
+    name: dubbo-api-back #不同的服务不同
+  protocol:
+    name: dubbo
+    port: 18081
+  registry:
+    address: nacos://127.0.0.1:8848
+    timeout: 10000
+
 spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
   application:
     name: api-back
   # 默认 dev 环境
