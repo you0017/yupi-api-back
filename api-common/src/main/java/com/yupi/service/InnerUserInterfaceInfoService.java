@@ -27,4 +27,6 @@ public interface InnerUserInterfaceInfoService extends IService<UserInterfaceInf
      * @return
      */
     boolean invokeCount(long interfaceInfoId, long userId);
+
+    boolean getInvokeCount(Long interfaceInfoId, Long userId);
 }

@@ -97,6 +97,11 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
             return handleNoAuth(response);
         }
 
+        //是否还有调用次数
+        if (!innerUserInterfaceInfoService.getInvokeCount(interfaceInfo.getId(), invokeUser.getId())) {
+            return handleNoAuth(response);
+        }
+
         //对返回值做处理
         ServerHttpResponseDecorator decoratedResponse = new ServerHttpResponseDecorator(response) {
             @Override
@@ -108,9 +113,8 @@ public class CustomGlobalFilter implements GlobalFilter, Ordered {
                         log.info("请求响应：" + response.getStatusCode());
 
                         //8.调用成功，接口调用次数加一
-                        if (response.getStatusCode().equals(HttpStatus.OK)){
-                            innerUserInterfaceInfoService.invokeCount(interfaceInfo.getId(), invokeUser.getId());
-                        }
+                        innerUserInterfaceInfoService.invokeCount(interfaceInfo.getId(), invokeUser.getId());
+
                         // probably should reuse buffers
                         byte[] content = new byte[dataBuffer.readableByteCount()];
                         dataBuffer.read(content);

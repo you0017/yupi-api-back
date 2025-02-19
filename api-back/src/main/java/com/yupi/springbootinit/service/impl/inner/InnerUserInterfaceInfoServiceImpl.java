@@ -1,6 +1,7 @@
 package com.yupi.springbootinit.service.impl.inner;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yupi.model.entity.InterfaceInfo;
@@ -58,6 +59,18 @@ public class InnerUserInterfaceInfoServiceImpl extends ServiceImpl<UserInterface
                 .eq(UserInterfaceInfo::getUserId,userId)
                 .gt(UserInterfaceInfo::getLeftNum,0)
                 .setSql("left_num = left_num - 1,total_num = total_num + 1"));
+    }
+
+    @Override
+    public boolean getInvokeCount(Long interfaceInfoId, Long userId) {
+        if (interfaceInfoId <= 0 || userId <= 0){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        LambdaQueryWrapper<UserInterfaceInfo> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(UserInterfaceInfo::getInterfaceInfoId,interfaceInfoId)
+                .eq(UserInterfaceInfo::getUserId,userId);
+        UserInterfaceInfo userInterfaceInfo = this.getOne(queryWrapper);
+        return userInterfaceInfo.getLeftNum() > 0;
     }
 }
 
